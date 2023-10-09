@@ -1,0 +1,90 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class ZomatoOrderTest {
+    private WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+        // Set up WebDriver for Microsoft Edge
+        System.setProperty("webdriver.edge.driver", "path/to/msedgedriver.exe");
+        driver = new EdgeDriver();
+        driver.manage().window().maximize();
+        driver.get("https://www.zomato.com");
+    }
+
+
+    @Test(priority = 1)
+    public void loginToZomato() {
+        // Locate and interact with login elements
+        WebElement loginButton = driver.findElement(By.id("login-button"));
+        loginButton.click();
+
+        WebElement emailInput = driver.findElement(By.id("email-input"));
+        emailInput.sendKeys("your_email@example.com");
+
+        WebElement passwordInput = driver.findElement(By.id("password-input"));
+        passwordInput.sendKeys("your_password");
+
+        WebElement loginSubmitButton = driver.findElement(By.id("login-submit-button"));
+        loginSubmitButton.click();
+    }
+
+    @Test(priority = 2)
+    public void searchAndOrderFood() {
+        // Search for a restaurant or food item
+        WebElement searchInput = driver.findElement(By.id("search-input"));
+        searchInput.sendKeys("Pizza");
+
+        WebElement searchButton = driver.findElement(By.id("search-button"));
+        searchButton.click();
+
+        // Select a restaurant and add items to cart
+        WebElement restaurantLink = driver.findElement(By.linkText("Pizza Palace"));
+        restaurantLink.click();
+
+        WebElement addItemButton = driver.findElement(By.xpath("//button[text()='Add to Cart']"));
+        addItemButton.click();
+
+        // Proceed to checkout
+        WebElement cartIcon = driver.findElement(By.id("cart-icon"));
+        cartIcon.click();
+
+        WebElement checkoutButton = driver.findElement(By.id("checkout-button"));
+        checkoutButton.click();
+    }
+
+    @Test(priority = 3)
+    public void proceedToPayment() {
+        // Add payment details (This is a simplified example; do not use real payment information)
+        WebElement cardNumberInput = driver.findElement(By.id("card-number"));
+        cardNumberInput.sendKeys("1234 5678 9012 3456");
+
+        WebElement expiryInput = driver.findElement(By.id("expiry-date"));
+        expiryInput.sendKeys("12/24");
+
+        WebElement cvvInput = driver.findElement(By.id("cvv"));
+        cvvInput.sendKeys("123");
+
+        // Click the "Pay Now" button
+        WebElement payNowButton = driver.findElement(By.id("pay-now-button"));
+        payNowButton.click();
+
+        // Simulate a payment success message (This is a simplified example)
+        WebElement paymentSuccessMessage = driver.findElement(By.id("payment-success-message"));
+        assert paymentSuccessMessage.isDisplayed();
+    }
+
+    @AfterTest
+    public void tearDown() {
+        // Close the browser
+        driver.quit();
+    }
+}
+
+
